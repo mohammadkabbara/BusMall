@@ -13,7 +13,7 @@ let allImageElement = document.getElementById('images-div');
 
 
 
-let maxAttempts = 25;
+let maxAttempts =25;
 let userAttemptsCounter = 0;
 let userView = 0;
 
@@ -110,13 +110,17 @@ function renderThreeImages() {
 
 
 
-    while ((leftImageIndex === rightImageIndex) || (leftImageIndex === middleImageIndex) || (middleImageIndex === rightImageIndex)) {
+    // while ((leftImageIndex === rightImageIndex) || (leftImageIndex === middleImageIndex) || (middleImageIndex === rightImageIndex)) {
+    //     rightImageIndex = generateRandomIndex();
+    //     middleImageIndex = generateRandomIndex();
+    // leftImageIndex=generateRandomIndex();
+
+
+
+    // }
+    while (leftImageIndex === rightImageIndex || leftImageIndex === middleImageIndex || middleImageIndex === rightImageIndex) {
         rightImageIndex = generateRandomIndex();
         middleImageIndex = generateRandomIndex();
-        // leftImageIndex=generateRandomIndex();
-
-
-
     }
     // while ((leftImageIndex===rightImageIndex) || (leftImageIndex===middleImageIndex) || (middleImageIndex===rightImageIndex) ) {
     //     rightImageIndex=generateRandomIndex();
@@ -130,7 +134,7 @@ function renderThreeImages() {
     leftImageElement.src = Product.allProducts[leftImageIndex].source;
     Product.allProducts[leftImageIndex].viwes++;
 
-    middleImageElement.src = Product.allProducts[rightImageIndex].source;
+    middleImageElement.src = Product.allProducts[middleImageIndex].source;
     Product.allProducts[middleImageIndex].viwes++;
 
     rightImageElement.src = Product.allProducts[rightImageIndex].source;
@@ -149,29 +153,31 @@ renderThreeImages();
 // leftImageElement.addEventListener('click', userClick);
 // middleImageElement.addEventListener('click', userClick);
 // rightImageElement.addEventListener('click', userClick);
-allImageElement.addEventListener('click' , userClick);
+allImageElement.addEventListener('click', userClick);
 
 
-let button = document.getElementById('results-list');
-button.addEventListener('click', userClick);
 
 
 
 
 function userClick(event) {
-    // viwes ++;
+
     userAttemptsCounter++;
     if (userAttemptsCounter <= maxAttempts) {
         if (event.target.id === 'left-image') {
             Product.allProducts[leftImageIndex].votes++
-            // Product.allProducts[leftImageIndex].viwes++
+
         } else if (event.target.id === 'middle-image') {
             Product.allProducts[middleImageIndex].votes++
-            // Product.allProducts[middleImageIndex].viwes++
-        } else {
-            (event.target.id === 'right-image')
+
+        } else if (event.target.id === 'right-image') {
+
             Product.allProducts[rightImageIndex].votes++
-            // Product.allProducts[rightImageIndex].viwes++
+
+        } else {
+            alert('please click on the images');
+            userAttemptsCounter--;
+
         }
 
 
@@ -181,14 +187,17 @@ function userClick(event) {
     } else {
 
         alert(' you voted 25 times ,click on buttun to show a result ');
-        document.getElementById("btn").onclick = function () { resultButton() };
 
+        let button=document.getElementById('button');
+        button.hidden=false;
         
+        button.addEventListener('click', resultButton);
 
-        // leftImageElement.removeEventListener('click', userClick);
-        // middleImageElement.removeEventListener('click', userClick);
-        // rightImageElement.removeEventListener('click', userClick);
-        allImageElement.aremoveEventListener('click' , userClick);
+        // document.getElementById("btn").onclick = function () { resultButton() };
+
+
+
+        allImageElement.removeEventListener('click', userClick);
     }
 }
 
@@ -200,24 +209,24 @@ function resultButton() {
     let list = document.getElementById('results-list');
     for (let i = 0; i < Product.allProducts.length; i++) {
         let productResult = document.createElement('li');
-        list.appendChild(productResult);
+        list.append(productResult);
         productResult.textContent = `${Product.allProducts[i].name}  has ${Product.allProducts[i].votes}   Votes and the has viwes ${Product.allProducts[i].viwes}  ones`;
 
 
     }
 
 
-    console.log(makeClick);
+    
+   
 
-    // leftImageElement.removeEventListener('click', userClick);
-    // middleImageElement.removeEventListener('click', userClick);
-    // rightImageElement.removeEventListener('click', userClick);
+    // button.removeEventListener('click', resultButton);
+    button.hidden=true;
+
+    
+    
+    
 
 
-
-
-
-    userClick();
 }
 
 
