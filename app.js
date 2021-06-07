@@ -24,29 +24,14 @@ let middleImageIndex;
 let rightImageIndex;
 
 
-// let busMallImages = [
-//     'bag.jpg',
-//     'banana.jpg',
-//     'bathroom.jpg',
-//     'boots.jpg',
-//     'breakfast.jpg',
-//     'bubblegum.jpg',
-//     'chair.jpg',
-//     'cthulhu.jpg',
-//     'dog-duck.jpg',
-//     'dragon.jpg',
-//     'pen.jpg',
-//     'pet-sweep.jpg',
-//     'scissors.jpg',
-//     'shark.jpg',
-//     'sweep.png',
-//     'tauntaun.jpg',
-//     'unicorn.jpg',
-//     'usb.gif',
-//     'water-can.jpg',
-//     'wine-glass.jpg',
 
-// ];
+let productNames=[];
+let votes=[];
+let viwes=[];
+let productArray =[]
+
+
+
 
 function generateRandomIndex() {
 
@@ -61,15 +46,13 @@ function Product(name, source) {
     this.source = source;
     this.votes = 0;
     this.viwes = 0;
+    productNames.push(this.name);
     Product.allProducts.push(this);
+    
 }
 
 
 Product.allProducts = [];
-
-// for(i=0;i<busMallImages.length;i++){
-//     new Product(busMallImages[i]);
-// }
 
 
 new Product('bag', 'img/bag.jpg');
@@ -97,39 +80,39 @@ new Product('water-can', 'img/water-can.jpg');
 function renderThreeImages() {
 
 
-    // allImageElement =generateRandomIndex();
+    
 
     leftImageIndex = generateRandomIndex();
 
     middleImageIndex = generateRandomIndex();
 
     rightImageIndex = generateRandomIndex();
+    
+    
+
+    
+while ((leftImageIndex === rightImageIndex || leftImageIndex === middleImageIndex || middleImageIndex === rightImageIndex  ) || (productArray.includes(leftImageIndex) || productArray.includes(rightImageIndex)||productArray.includes(middleImageIndex))) {
 
 
 
 
 
-
-    // while ((leftImageIndex === rightImageIndex) || (leftImageIndex === middleImageIndex) || (middleImageIndex === rightImageIndex)) {
-    //     rightImageIndex = generateRandomIndex();
-    //     middleImageIndex = generateRandomIndex();
-    // leftImageIndex=generateRandomIndex();
-
-
-
-    // }
-    while (leftImageIndex === rightImageIndex || leftImageIndex === middleImageIndex || middleImageIndex === rightImageIndex) {
         rightImageIndex = generateRandomIndex();
         middleImageIndex = generateRandomIndex();
-    }
-    // while ((leftImageIndex===rightImageIndex) || (leftImageIndex===middleImageIndex) || (middleImageIndex===rightImageIndex) ) {
-    //     rightImageIndex=generateRandomIndex();
-    //     middleImageIndex=generateRandomIndex();
+        leftImageIndex = generateRandomIndex();
+}
 
-    //   }
 
-    // console.log(Product.allProducts[middleImageIndex, leftImageIndex].source);
+productArray=[];
+productArray.push(leftImageIndex);
+productArray.push(rightImageIndex);
+productArray.push(middleImageIndex);
 
+console.log(leftImageIndex,rightImageIndex,middleImageIndex);
+
+
+    
+    
 
     leftImageElement.src = Product.allProducts[leftImageIndex].source;
     Product.allProducts[leftImageIndex].viwes++;
@@ -139,20 +122,27 @@ function renderThreeImages() {
 
     rightImageElement.src = Product.allProducts[rightImageIndex].source;
     Product.allProducts[rightImageIndex].viwes++;
-    // // allImageElement.src =Product.allProducts[allImageElement].source;
-
-
-
-
+    
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 renderThreeImages();
 
-// leftImageElement.addEventListener('click', userClick);
-// middleImageElement.addEventListener('click', userClick);
-// rightImageElement.addEventListener('click', userClick);
 allImageElement.addEventListener('click', userClick);
 
 
@@ -181,7 +171,7 @@ function userClick(event) {
         }
 
 
-        console.log(Product.allProducts);
+        // console.log(Product.allProducts);
         renderThreeImages();
 
     } else {
@@ -193,11 +183,18 @@ function userClick(event) {
         
         button.addEventListener('click', resultButton);
 
-        // document.getElementById("btn").onclick = function () { resultButton() };
+        
 
 
 
         allImageElement.removeEventListener('click', userClick);
+
+        for (let i = 0; i < Product.allProducts.length; i++) {
+
+            votes.push(Product.allProducts[i].votes);
+            viwes.push(Product.allProducts[i].viwes);
+          }
+          chart();
     }
 }
 
@@ -228,6 +225,70 @@ function resultButton() {
 
 
 }
+
+
+function chart() {
+    let ctx = document.getElementById('myChart');
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels:productNames,
+            datasets: [{
+                label: '# of Votes',
+                data:votes,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            },
+            {
+              label: '# of Shown',
+              data:viwes,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }
+          ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+      
+  }
+
+
 
 
 
