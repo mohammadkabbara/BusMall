@@ -129,26 +129,9 @@ console.log(leftImageIndex,rightImageIndex,middleImageIndex);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 renderThreeImages();
 
 allImageElement.addEventListener('click', userClick);
-
-
-
-
-
 
 function userClick(event) {
 
@@ -173,6 +156,7 @@ function userClick(event) {
 
         // console.log(Product.allProducts);
         renderThreeImages();
+        transformArray(); //called function I made it to change array to string
 
     } else {
 
@@ -182,10 +166,7 @@ function userClick(event) {
         button.hidden=false;
         
         button.addEventListener('click', resultButton);
-
         
-
-
 
         allImageElement.removeEventListener('click', userClick);
 
@@ -198,7 +179,7 @@ function userClick(event) {
     }
 }
 
-
+transformString(); 
 
 function resultButton() {
 
@@ -213,16 +194,10 @@ function resultButton() {
     }
 
 
-    
-   
-
     // button.removeEventListener('click', resultButton);
     button.hidden=true;
 
     
-    
-    
-
 
 }
 
@@ -287,6 +262,30 @@ function chart() {
     });
       
   }
+
+
+
+  function transformArray(){  // function to change array to string
+      let msgArray = JSON.stringify(Product.allProducts);
+    //   console.log(msgArray);
+      localStorage.setItem('product' ,msgArray);
+    //   console.log(setItem);
+
+  }
+
+  function transformString(){  //function to change again string to array
+      let data= localStorage.getItem('product');
+      let productData =JSON.parse(data);
+      if(productData!==null){
+          Product.allProducts=productData;
+      }
+      renderThreeImages();
+
+
+  }
+
+  transformString();
+  console.log(Product.allProducts);
 
 
 
